@@ -4,6 +4,8 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "express": "4.x"
+    "body-parser": "^1.9.0",
+    "express": "4.x",
+    "pg": "^3.4.5"
   }
 }
