@@ -71,7 +71,7 @@ app.post('/', function(req, res){
           slack.send({
             text: 'Success! '+points+' points added to '+name+'\nThat\'s '+newPoints+' total!',
             channel: '#finlit',
-            username: 'Dumb Points Fun'
+            username: 'The Arbiter of Justice'
           });
 
           res.json({"success":true});
