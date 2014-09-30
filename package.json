@@ -1,0 +1,9 @@
+{
+  "name": "slack-points",
+  "description": "dumb slack points fun",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": "4.x"
+  }
+}
