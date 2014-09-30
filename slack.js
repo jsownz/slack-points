@@ -1,9 +1,11 @@
 var express = require('express'),
     pg      = require('pg'),
     bodyParser = require('body-parser'),
-    http = require('http')
+    http = require('http'),
+    Slack = require('node-slack'),
     app = express();
 
+var slack = new Slack('dopamine','REQtnGjBsWotN3hTxCDtbzmV');
 var conString = "postgres://slack:slackPoints@localhost/slack";
 
 app.use(bodyParser.json());
@@ -23,7 +25,6 @@ app.get('/', function(req, res){
       if(err) {
         return console.error('error running query', err);
       }
-      console.log(result.rows);
       var data = result.rows;
 
       client.end();
@@ -67,33 +68,11 @@ app.post('/', function(req, res){
 
           client.end();
 
-          var data = {
-            "text": "Success! "+points+" points added to "+name+"\nThat's "+newPoints+" total!"
-          }
-          var dataString = JSON.stringify(data);
-          var dataLength = dataString.length;
-
-          var headers = {
-            'Content-Type': 'application/json',
-            'Content-Length': dataLength
-          };
-
-          var options = {
-            host: 'https://dopamine.slack.com',
-            port: 80,
-            path: '/services/hooks/incoming-webhook?token=REQtnGjBsWotN3hTxCDtbzmV',
-            method: 'POST',
-            headers: headers
-          };
-
-          var post_req = http.request(options, function(res) {
-            res.setEncoding('utf8');
-            res.on('data', function (chunk) {
-                console.log('Response: ' + chunk);
-            });
+          slack.send({
+            text: 'Success! '+points+' points added to '+name+'\nThat\'s '+newPoints+' total!',
+            channel: '#finlit',
+            username: 'Dumb Points Fun'
           });
-          post_req.write(dataString);
-          post_req.end();
 
           res.json({"success":true});
 
@@ -104,7 +83,7 @@ app.post('/', function(req, res){
   });
 });
 
-app.post('/testing', function(req, res){
+app.post('/services/hooks/incoming-webhook', function(req, res){
   console.log(req.body);
 });
 
