@@ -5,6 +5,10 @@ var express = require('express'),
 
 app.use(bodyParser.json());
 
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+
 app.get('/', function(req, res){
 
   var conString = "postgres://slack:slackPoints@localhost/slack";
